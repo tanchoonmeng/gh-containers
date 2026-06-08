@@ -11,6 +11,11 @@ jobs:
   test:
     environment: testing
     runs-on: ubuntu-latest
+    # container: node:26 # OK but doesn't allow env vars to be set in the workflow file, so we use the workaround below
+    container:
+      image: node:26
+      env: 
+        DUMMY: dummy
     env:
       MONGODB_CONNECTION_PROTOCOL: mongodb+srv
       MONGODB_CLUSTER_ADDRESS: cluster0.cvkliap.mongodb.net
