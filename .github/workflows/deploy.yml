@@ -10,21 +10,24 @@ env:
 jobs:
   test:
     environment: testing
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest # comes with node.js presinatalled
     # container: node:26 # OK but doesn't allow env vars to be set in the workflow file, so we use the workaround below
-    container:
-      image: node:26
-      env: 
-        DUMMY: dummy
+    # container:
+    #   image: node:26
+    #   env: 
+    #     DUMMY: dummy
     env:
       MONGODB_CONNECTION_PROTOCOL: mongodb
-      MONGODB_CLUSTER_ADDRESS: mongodb
+      # MONGODB_CLUSTER_ADDRESS: mongodb
+      MONGODB_CLUSTER_ADDRESS: localhost:27017 # needed to use localhost and port when nodejs is running from runner instead of inside a container
       MONGODB_USERNAME: root
       MONGODB_PASSWORD: example
       PORT: 8080
     services: # do not require clients to also be a container (can be just runner)
       mongodb:
         image: mongo
+        ports: # needed when nodejs is running from runner instead of inside a container 
+          - 27017:27017
         env:
           MONGO_INITDB_ROOT_USERNAME: root
           MONGO_INITDB_ROOT_PASSWORD: example        
